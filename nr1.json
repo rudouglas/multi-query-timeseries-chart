@@ -1,6 +1,6 @@
 {
     "schemaType": "NERDPACK",
     "id": "2f94be19-8bf9-4aaa-ac11-9a2ab50042e4",
-    "displayName": "CrossAccountQuery",
+    "displayName": "Multi-Query Timeseries Chart",
     "description": "This is a Custom Visualization that allows you to add the results of multiple cross-account timeseries queries to a single chart"
 }

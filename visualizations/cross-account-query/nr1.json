@@ -1,7 +1,7 @@
 {
     "schemaType": "VISUALIZATION",
-    "id": "cross-account-query",
-    "displayName": "CrossAccountQuery",
+    "id": "multi-query-timeseries-chart",
+    "displayName": "Multi-Query Timeseries Chart",
     "description": "",
     "configuration": [
         {
