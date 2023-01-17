@@ -1,0 +1,23 @@
+{
+    "private": true,
+    "name": "cross-account-query",
+    "version": "0.1.0",
+    "scripts": {
+        "start": "nr1 nerdpack:serve",
+        "test": "exit 0"
+    },
+    "nr1": {
+        "uuid": "2f94be19-8bf9-4aaa-ac11-9a2ab50042e4"
+    },
+    "dependencies": {
+        "prop-types": "15.7.2",
+        "react": "17.0.2",
+        "react-dom": "17.0.2",
+        "recharts": "^2.2.0"
+    },
+    "browserslist": [
+        "last 2 versions",
+        "not ie < 11",
+        "not dead"
+    ]
+}
