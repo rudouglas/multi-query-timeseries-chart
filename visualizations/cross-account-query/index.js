@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-} from "recharts";
 import {
   Card,
   CardBody,
   HeadingText,
+  BlockText,
   NrqlQuery,
   Spinner,
   AutoSizer,
@@ -19,10 +12,16 @@ import {
 } from "nr1";
 
 export const useGuids = (nrqlQueries) => {
-  const [monitors, setMonitors] = useState([]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("Starting");
+  const [error, setError] = useState(null);
+
   useEffect(async () => {
+    try {
+
+    } catch(error) {
+      setError(error)
+    }
     setLoading(true);
 
     const fetchGuids = async () => {
@@ -42,19 +41,27 @@ export const useGuids = (nrqlQueries) => {
           })
         );
       });
-      response = await Promise.all(promises);
+      response = await Promise.all(promises).catch((err) => {
+        console.log(err.message);
+        setError(err);
+      });
       console.log({ response });
       return response;
     };
 
-    const results = await fetchGuids();
-    console.log({ results });
-    setMonitors(results);
+    const queryResults = await fetchGuids();
+    // console.log(JSON.stringify(queryResults))
+    const results = queryResults.map(({data}) => data).flat(1);
+    console.log(JSON.stringify(results))
+
+    console.log({ results, queryResults });
+    setResults(results);
     setLoading(false);
   }, [nrqlQueries]);
   return {
-    monitors,
+    results,
     loading,
+    error,
   };
 };
 
@@ -63,11 +70,8 @@ const CrossAccountQueryVisualization = ({
   chartType = "line",
 }) => {
   console.log(JSON.stringify(nrqlQueries));
-  const { monitors, loading } = useGuids(nrqlQueries);
-  console.log({ monitors, loading, chartType });
-  if (loading) {
-    return <Spinner />;
-  }
+  const { results, loading, error } = useGuids(nrqlQueries);
+  console.log({ results, loading, chartType });
   const nrqlQueryPropsAvailable =
     nrqlQueries &&
     nrqlQueries[0] &&
@@ -77,13 +81,30 @@ const CrossAccountQueryVisualization = ({
   if (!nrqlQueryPropsAvailable) {
     return <EmptyState />;
   }
-  const sortedData = monitors.map((monitor) => {
+
+  if (
+    nrqlQueries.some(
+      ({ query }) => query && !query.toLowerCase().includes("timeseries")
+    )
+  ) {
+    return (
+      <ErrorState error="Some of your queries do not contain 'TIMESERIES'. Please make sure all your queries are timeseries queries!" />
+    );
+  }
+  if (loading) {
+    return <Spinner />;
+  }
+  if (error) {
+    return <ErrorState error={error.message} />;
+  }
+
+  const sortedData = results.map((result) => {
     return {
-      metadata: monitor.data[0].metadata,
-      data: monitor.data[0].data,
+      metadata: result.metadata,
+      data: result.data,
     };
   });
-  console.log({ monitors, sortedData });
+  console.log({ results, sortedData });
   return (
     <AutoSizer>
       {({ width, height }) => (
@@ -119,7 +140,7 @@ const EmptyState = () => (
   </Card>
 );
 
-const ErrorState = () => (
+const ErrorState = ({ error }) => (
   <Card className="ErrorState">
     <CardBody className="ErrorState-cardBody">
       <HeadingText
@@ -129,6 +150,7 @@ const ErrorState = () => (
       >
         Oops! Something went wrong.
       </HeadingText>
+      <BlockText>{error}</BlockText>
     </CardBody>
   </Card>
 );

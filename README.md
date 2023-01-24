@@ -1,6 +1,10 @@
 # Multi-Query Timeseries Chart
 This is a Custom Visualization that allows you to add the results of multiple cross-account timeseries queries to a single chart. The current limit in Newrelic One is 20 queries per chart, but this allows you to add many more.
 
+## Features
+  - Supports 50+ unique query/account configurations (tested so far)
+  - Supports Line and Area timeseries chart types
+
 ## Getting started
 
 Run the following scripts:

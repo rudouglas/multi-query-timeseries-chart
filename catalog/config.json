@@ -1,13 +1,13 @@
 {
-  "tagline": "",
-  "details": "",
+  "tagline": "Chart results from multiple cross-account timeseries queries",
+  "details": "This is a Custom Visualization that allows you to add the results of multiple cross-account timeseries queries to a single chart. The [current limit](https://docs.newrelic.com/docs/query-your-data/explore-query-data/query-builder/use-advanced-nrql-mode-query-data/) in Newrelic One is 20 queries per chart, but this allows you to add many more.",
   "categoryTerms": [],
   "keywords": [],
   "repository": "",
   "whatsNew": "",
   "support": {
     "email": {
-      "address": ""
+      "address": "rdouglas@newrelic.com"
     },
     "issues": {
       "url": ""
